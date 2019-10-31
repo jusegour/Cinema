@@ -10,8 +10,17 @@ package modelo;
  * @author PC5
  */
 public class Reservas {
-    
-    private String tipo_cliente,id_cliente,ciudad,multiplex,pelicula,hora,ubicacion,metodo_pago,sillas_reservadas;
+
+    private String tipo_cliente, id_cliente, ciudad, multiplex, pelicula, hora, ubicacion, metodo_pago, sillas_reservadas;
+    private Taquillero taquillero;
+
+    public Taquillero getTaquillero() {
+        return taquillero;
+    }
+
+    public void setTaquillero(Taquillero taquillero) {
+        this.taquillero = taquillero;
+    }
 
     public String getTipo_cliente() {
         return tipo_cliente;
@@ -84,6 +93,5 @@ public class Reservas {
     public void setSillas_reservadas(String sillas_reservadas) {
         this.sillas_reservadas = sillas_reservadas;
     }
-    
-    
+
 }

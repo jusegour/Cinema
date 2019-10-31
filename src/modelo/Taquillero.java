@@ -13,8 +13,45 @@ public class Taquillero {
 
     private String tipo_identificacion, numero_identificacion, nombre, usuario, password;
 
+    private Horario horario;
+    private Tarjeta tarjeta;
+    private Teatro teatro;
+    private Pelicula pelicula;
+
     public String getTipo_identificacion() {
         return tipo_identificacion;
+    }
+
+    public Horario getHorario() {
+        return horario;
+    }
+
+    public void setHorario(Horario horario) {
+        this.horario = horario;
+    }
+
+    public Tarjeta getTarjeta() {
+        return tarjeta;
+    }
+
+    public void setTarjeta(Tarjeta tarjeta) {
+        this.tarjeta = tarjeta;
+    }
+
+    public Teatro getTeatro() {
+        return teatro;
+    }
+
+    public void setTeatro(Teatro teatro) {
+        this.teatro = teatro;
+    }
+
+    public Pelicula getPelicula() {
+        return pelicula;
+    }
+
+    public void setPelicula(Pelicula pelicula) {
+        this.pelicula = pelicula;
     }
 
     public void setTipo_identificacion(String tipo_identificacion) {

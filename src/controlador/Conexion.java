@@ -19,6 +19,7 @@ public class Conexion {
     public void setCon(Connection con) {
         this.con = con;
     }
+    
 
     public void conectarme() throws SQLException {
 

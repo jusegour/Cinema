@@ -15,6 +15,18 @@ public class Teatro {
     private Horario horario_atencion;
     private String telefono;
     private String extension;
+    
+    private Sala salas;
+
+    public Sala getSalas() {
+        return salas;
+    }
+
+    public void setSalas(Sala salas) {
+        this.salas = salas;
+    }
+    
+    
 
     public String getNombre() {
         return nombre;

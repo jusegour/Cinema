@@ -13,6 +13,19 @@ public class Horario {
     
     private String idteatro,idsala,pelicula,fecha,hora;
 
+    public Horario() {
+    }
+
+    public Horario(String idteatro, String idsala, String pelicula, String fecha, String hora) {
+        this.idteatro = idteatro;
+        this.idsala = idsala;
+        this.pelicula = pelicula;
+        this.fecha = fecha;
+        this.hora = hora;
+    }
+    
+    
+
     public String getIdteatro() {
         return idteatro;
     }
