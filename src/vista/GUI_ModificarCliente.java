@@ -10,6 +10,9 @@ import controlador.ControladorCliente;
 import java.sql.SQLException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.swing.JOptionPane;
+import javax.swing.table.DefaultTableModel;
+import modelo.Cliente;
 
 /**
  *
@@ -17,15 +20,19 @@ import java.util.logging.Logger;
  */
 public class GUI_ModificarCliente extends javax.swing.JFrame {
 
-    ControladorCliente ctrl=new ControladorCliente();
-    Conexion con=new Conexion();
+    ControladorCliente ctrl = new ControladorCliente();
+    Conexion con = new Conexion();
+    Cliente c = new Cliente();
+
     public GUI_ModificarCliente() {
         initComponents();
-        try{
-        con.conectarme();
-        ctrl.setCon(con.getCon());
-        cargar_clientes();
-        }catch(SQLException e){
+        btnModificar.setEnabled(false);
+        btnEliminar.setEnabled(false);
+        try {
+            con.conectarme();
+            ctrl.setCon(con.getCon());
+            cargar_clientes();
+        } catch (SQLException e) {
             System.out.println(e.toString());
         }
     }
@@ -92,6 +99,11 @@ public class GUI_ModificarCliente extends javax.swing.JFrame {
         jLabel7.setText("Contraseña");
 
         btnModificar.setText("Modificar");
+        btnModificar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnModificarActionPerformed(evt);
+            }
+        });
 
         btnEliminar.setText("Eliminar");
         btnEliminar.addActionListener(new java.awt.event.ActionListener() {
@@ -178,38 +190,102 @@ public class GUI_ModificarCliente extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnEliminarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEliminarActionPerformed
-        // TODO add your handling code here:
+        c.setId(txtid.getText());
+
+        try {
+            con.conectarme();
+            ctrl.setCon(con.getCon());
+            if (ctrl.eliminar_cliente(c)) {
+                JOptionPane.showMessageDialog(null, "Eliminado Exitosamente");
+                limpiar();
+                limpiartabla();
+                cargar_clientes();
+            } else {
+                JOptionPane.showMessageDialog(null, "Ocurrio un error al eliminar esta persona");
+            }
+        } catch (SQLException e) {
+            System.out.println(e.toString());
+        }
     }//GEN-LAST:event_btnEliminarActionPerformed
 
     private void tabla_clienteMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tabla_clienteMouseClicked
-       int fila=tabla_cliente.getSelectedRow();
-       txtid.setText(tabla_cliente.getValueAt(fila, 0).toString());
-       txt_tipo.setText(tabla_cliente.getValueAt(fila, 1).toString());
-       txtidentificacion.setText(tabla_cliente.getValueAt(fila, 2).toString());
-       txtnombres.setText(tabla_cliente.getValueAt(fila, 3).toString());
-       txtusuario.setText(tabla_cliente.getValueAt(fila, 4).toString());
-       txtcontraseña.setText(tabla_cliente.getValueAt(fila, 5).toString());
-       
-       
+        int fila = tabla_cliente.getSelectedRow();
+        txtid.setText(tabla_cliente.getValueAt(fila, 0).toString());
+        txt_tipo.setText(tabla_cliente.getValueAt(fila, 1).toString());
+        txtidentificacion.setText(tabla_cliente.getValueAt(fila, 2).toString());
+        txtnombres.setText(tabla_cliente.getValueAt(fila, 3).toString());
+        txtusuario.setText(tabla_cliente.getValueAt(fila, 4).toString());
+        txtcontraseña.setText(tabla_cliente.getValueAt(fila, 5).toString());
+
+        btnModificar.setEnabled(true);
+        btnEliminar.setEnabled(true);
+
+
     }//GEN-LAST:event_tabla_clienteMouseClicked
+
+    public void limpiar() {
+        txtid.setText("");
+        txt_tipo.setText("");
+        txtidentificacion.setText("");
+        txtnombres.setText("");
+        txtusuario.setText("");
+        txtcontraseña.setText("");
+    }
+
+    public void limpiartabla() {
+        DefaultTableModel df = (DefaultTableModel) tabla_cliente.getModel();
+        int a = tabla_cliente.getRowCount() - 1;
+        for (int i = a; i >= 0; i--) {
+            df.removeRow(df.getRowCount() - 1);
+        }
+    }
+    private void btnModificarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnModificarActionPerformed
+        if (!txtid.getText().isEmpty() && !txt_tipo.getText().isEmpty() && !txtidentificacion.getText().isEmpty() && !txtnombres.getText().isEmpty() && !txtusuario.getText().isEmpty() && !txtcontraseña.getText().isEmpty()) {
+            c.setId(txtid.getText());
+            c.setTipo_identificacion(txt_tipo.getText());
+            c.setNro_identificacion(txtidentificacion.getText());
+            c.setNombre(txtnombres.getText());
+            c.setUsuario(txtusuario.getText());
+            c.setPassword(txtcontraseña.getText());
+
+            try {
+                con.conectarme();
+                ctrl.setCon(con.getCon());
+                if (ctrl.modificar_cliente(c)) {
+                    JOptionPane.showMessageDialog(null, "Datos modificados correctamente");
+                    limpiar();
+                    limpiartabla();
+                    cargar_clientes();
+
+                } else {
+                    JOptionPane.showMessageDialog(null, "Ocurrió un error al intentar actualizar sus datos");
+                }
+
+            } catch (SQLException e) {
+                System.out.println(e.toString());
+            }
+        } else {
+            JOptionPane.showMessageDialog(null, "Debe rellenar todos los campos");
+        }
+    }//GEN-LAST:event_btnModificarActionPerformed
 
     /**
      * @param args the command line arguments
      */
-    public void cargar_clientes() throws SQLException{
-    String matriz[][]=new String[ctrl.listar_clientes().size()][6];
+    public void cargar_clientes() throws SQLException {
+        String matriz[][] = new String[ctrl.listar_clientes().size()][6];
         for (int i = 0; i < ctrl.listar_clientes().size(); i++) {
-            matriz[i][0]=ctrl.listar_clientes().get(i).getId();
-            matriz[i][1]=ctrl.listar_clientes().get(i).getTipo_identificacion();
-            matriz[i][2]=ctrl.listar_clientes().get(i).getNro_identificacion();
-            matriz[i][3]=ctrl.listar_clientes().get(i).getNombre();
-            matriz[i][4]=ctrl.listar_clientes().get(i).getUsuario();
-            matriz[i][5]=ctrl.listar_clientes().get(i).getPassword();
+            matriz[i][0] = ctrl.listar_clientes().get(i).getId();
+            matriz[i][1] = ctrl.listar_clientes().get(i).getTipo_identificacion();
+            matriz[i][2] = ctrl.listar_clientes().get(i).getNro_identificacion();
+            matriz[i][3] = ctrl.listar_clientes().get(i).getNombre();
+            matriz[i][4] = ctrl.listar_clientes().get(i).getUsuario();
+            matriz[i][5] = ctrl.listar_clientes().get(i).getPassword();
         }
-        
-        tabla_cliente.setModel(new javax.swing.table.DefaultTableModel(matriz, new String[]{"ID","tipo_cliente","identificacion","nombres","usuario","Contraseña"}));
+
+        tabla_cliente.setModel(new javax.swing.table.DefaultTableModel(matriz, new String[]{"ID", "tipo_cliente", "identificacion", "nombres", "usuario", "Contraseña"}));
     }
-    
+
     public static void main(String args[]) {
         /* Set the Nimbus look and feel */
         //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">

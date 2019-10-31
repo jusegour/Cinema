@@ -140,16 +140,17 @@ public class ControladorCliente extends Conexion {
     public boolean modificar_cliente(Cliente c) {
 
         PreparedStatement ps = null;
-        String sql = "update cliente set nro_identificacion=?,nombre=?,usuario=?,contraseña=? where idcliente=?";
+        String sql = "update cliente set tipo_cliente=?,nro_identificacion=?,nombre=?,usuario=?,contraseña=? where idcliente=?";
 
         try {
             ps = this.getCon().prepareStatement(sql);
-            ps.setString(1, null);
-            ps.setString(2, c.getTipo_identificacion());
-            ps.setString(3, c.getNro_identificacion());
-            ps.setString(4, c.getNombre());
-            ps.setString(5, c.getUsuario());
-            ps.setString(6, c.getPassword());
+            
+            ps.setString(1, c.getTipo_identificacion());
+            ps.setString(2, c.getNro_identificacion());
+            ps.setString(3, c.getNombre());
+            ps.setString(4, c.getUsuario());
+            ps.setString(5, c.getPassword());
+            ps.setString(6, c.getId());
 
             ps.execute();
             return true;
@@ -166,6 +167,7 @@ public class ControladorCliente extends Conexion {
 
         try {
             ps = this.getCon().prepareStatement(sql);
+            ps.setString(1, c.getId());
             ps.execute();
             return true;
         } catch (SQLException e) {
