@@ -55,20 +55,20 @@ public class ControladorCliente extends Conexion {
         Cliente c;
 
         try {
-            ps=this.getCon().prepareStatement(sql);
-            rs=ps.executeQuery();
+            ps = this.getCon().prepareStatement(sql);
+            rs = ps.executeQuery();
 
-            while(rs.next()){
-            String id=String.valueOf(rs.getInt(1));
-            String tipo_cliente=rs.getString(2);
-            String nro_identificacion=rs.getString(3);
-            String nombres=rs.getString(4);
-            String usuario=rs.getString(5);
-            String contraseña=rs.getString(6);
-            
-            c=new Cliente(id,tipo_cliente,nro_identificacion,nombres,usuario,contraseña);
-            
-            lista.add(c);
+            while (rs.next()) {
+                String id = String.valueOf(rs.getInt(1));
+                String tipo_cliente = rs.getString(2);
+                String nro_identificacion = rs.getString(3);
+                String nombres = rs.getString(4);
+                String usuario = rs.getString(5);
+                String contraseña = rs.getString(6);
+
+                c = new Cliente(id, tipo_cliente, nro_identificacion, nombres, usuario, contraseña);
+
+                lista.add(c);
             }
         } catch (SQLException e) {
             System.out.println(e.toString());
@@ -80,12 +80,12 @@ public class ControladorCliente extends Conexion {
         ResultSet rs = null;
         PreparedStatement ps = null;
         ArrayList<Horario> lista = new ArrayList<Horario>();
-        String sql = "SELECT * FROM horario where fecha=? and hora";
+        String sql = "SELECT * FROM horario where teatro=?";
         Horario h1;
         try {
             ps = this.getCon().prepareStatement(sql);
-            ps.setString(1, h.getFecha());
-            ps.setString(2, h.getHora());
+            ps.setString(1, h.getIdteatro());
+
             rs = ps.executeQuery();
             while (rs.next()) {
                 String teatro, sala, pelicula, fecha, hora;
@@ -144,7 +144,7 @@ public class ControladorCliente extends Conexion {
 
         try {
             ps = this.getCon().prepareStatement(sql);
-            
+
             ps.setString(1, c.getTipo_identificacion());
             ps.setString(2, c.getNro_identificacion());
             ps.setString(3, c.getNombre());
@@ -178,3 +178,5 @@ public class ControladorCliente extends Conexion {
     }
 
 }
+
+
